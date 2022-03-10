@@ -7,12 +7,10 @@ const app = express()
 
 const PORT = process.env.port || 3000
 
-//https://www.wikiart.org/en/maria-primachenko/all-works/text-list
 const baseurl = 'http://wikiart.org'
 const sitelang = '/en/'
 const artist = 'maria-primachenko'
 const suffix = '/all-works/text-list'
-// '/all-works#!#filterName:all-paintings-chronologically,resultType:masonry'
 
 const url = baseurl + sitelang + artist + suffix
 
@@ -39,6 +37,8 @@ const getPages = (html) => {
   return content
 }
 
+// Reference for node-html-parser syntax
+// https://cri.dev/posts/2020-11-06-Test-driving-a-HackerNews-scraper-with-Nodejs/
 const getUrls = async (list) => {
   const images = []
   for (const item of list) {
