@@ -49,13 +49,22 @@ const getUrls = async (list) => {
     )
     const src = img.getAttribute('src')
     const title = img.getAttribute('alt')
-    console.log(title)
     images.push({
       title,
       src,
     })
   }
   return images
+}
+
+const downloadImages = async (images) => {
+  for (const image of images) {
+    const response = await fetch(image.src)
+    const data = await response.arrayBuffer()
+    console.time(image.title)
+    fs.writeFileSync('images/' + image.title + '.jpg', Buffer.from(data))
+    console.timeEnd(image.title)
+  }
 }
 
 app.listen(PORT, () => {
@@ -65,7 +74,8 @@ app.listen(PORT, () => {
 const html = await getPage(url)
 const content = getPages(html)
 const urls = await getUrls(content)
-console.log(urls)
+downloadImages(urls)
+
 app.get('/', (req, res) => {
   res.json(urls)
 })
