@@ -47,7 +47,9 @@ const getUrls = async (list) => {
     const img = linkRoot.querySelector(
       'div.wiki-layout-artist-image-wrapper img'
     )
-    const src = img.getAttribute('src')
+    console.log(item)
+    const src = img.getAttribute('src').replace('!Large.jpg', '')
+    console.log(src)
     const title = img.getAttribute('alt')
     images.push({
       title,
@@ -74,8 +76,11 @@ app.listen(PORT, () => {
 const html = await getPage(url)
 const content = getPages(html)
 const urls = await getUrls(content)
-downloadImages(urls)
 
 app.get('/', (req, res) => {
   res.json(urls)
+})
+app.get('/download', (req, res) => {
+  res.send('Downloading in progress...')
+  downloadImages(urls)
 })
